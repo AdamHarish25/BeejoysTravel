@@ -27,7 +27,7 @@ header {
 }
 
 .logo {
-    width: 140px;
+    width: 170px;
 }
 
 nav ul {
@@ -530,7 +530,7 @@ header>* {
         gap: 30px;
     }
 
-    .guide{
+    .guide {
         padding: 40px 20px;
     }
 
@@ -543,17 +543,35 @@ header>* {
         padding: 20px;
     }
 
+    .prioritas>.testimoni-header {
+        padding: 0;
+    }
+
     .testimoni-header {
         gap: 10px;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 30px;
+        display: grid;
+        place-content: center;
     }
 
-    .testimoni-header h2{
-        font-size: 15px;
+    .testimoni-header h2 {
+        font-size: 18px;
+        margin-bottom: 0;
+        text-align: center;
+        width: 100vw;
+
     }
 
-    .testimoni-header img{
-        width: 120px;
+    .testimoni-header button {
+        display: none;
+        width: 0;
     }
+
+    /* .testimoni-header img{
+        width: 40px;
+    } */
 
     .upper {
         grid-template-columns: 1fr;
@@ -609,7 +627,7 @@ header>* {
         border-radius: 10px;
     }
 
-    .logoDesc p{
+    .logoDesc p {
         width: 300px;
     }
 }
@@ -644,6 +662,10 @@ header>* {
 
     .hero h1 {
         font-size: 28px;
+    }
+
+    .hero {
+        padding: 10px;
     }
 
     .guideHead h1 {
@@ -781,12 +803,13 @@ header>* {
     }
 }
 
-.sidebar, .open-sidebar-btn{
+.sidebar,
+.open-sidebar-btn {
     display: none;
 }
 
 @media screen and (max-width: 768px) {
-    .navbar{
+    .navbar {
         display: none;
     }
 
@@ -800,9 +823,31 @@ header>* {
         border-radius: 100%;
         border: none;
         position: fixed;
-        top: 20px;
+        top: 10px;
         right: 20px;
         z-index: 1000;
+    }
+
+    .testimoni-header {
+        gap: 10px;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 30px;
+        display: grid;
+        place-content: center;
+    }
+
+    .testimoni-header h2 {
+        font-size: 18px;
+        margin-bottom: 0;
+        text-align: center;
+        width: 100vw;
+
+    }
+
+    .testimoni-header button {
+        display: none;
+        width: 0;
     }
 
     .sidebar {

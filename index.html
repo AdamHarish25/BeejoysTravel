@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BeeJoys - its gonna be a Joyride!</title>
+    <title>VS Travel - Berpergian Kemana Aja Kamu Mau</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -16,10 +16,10 @@
             <!-- Desktop / Tablet Navbar -->
             <nav class="navbar">
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Guide</a></li>
-                    <li><a href="#">Destination</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="./Pages/Destinasi/index.html">Destinasi</a></li>
+                    <li><a href="./Pages/TravelNow/index.html">Travel Now</a></li>
+                    <li><a href="./Pages/Kontak/index.html">Kontak Kami</a></li>
+                    <li><a href="./Pages/Tentang/index.html">Tentang</a></li>
                 </ul>
             </nav>
 
@@ -31,11 +31,11 @@
         <!-- Sidebar (mobile only) -->
         <div id="mySidebar" class="sidebar">
             <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">×</a>
-            <a href="#">Home</a>
-            <a href="#">Destinations</a>
-            <a href="#">Tours</a>
-            <a href="#">Gallery</a>
-            <a href="#">Contact</a>
+            <a id="sideButton1" href="#">Beranda</a>
+            <a id="sideButton2" href="./Pages/Destinasi/index.html">Destinasi</a>
+            <a id="sideButton3" href="./Pages/TravelNow/index.html">Travel Now</a>
+            <a id="sideButton4" href="./Pages/Kontak/index.html">Kontak Kami</a>
+            <a id="sideButton5" href="./Pages/Tentang/index.html">Tentang</a>
         </div>
         <main>
             <section class="hero">
@@ -77,11 +77,11 @@
             <button>Trending</button>
             <button>Popular</button>
             <button>Recommend</button>
-            <button>Tour Packs</button>
+            <!-- <button>Tour Packs</button> -->
         </div>
 
         <div class="destination-grid">
-            <div class="destination-card">
+            <div class="destination-card" data-category="Trending">
                 <img src="asset/bali.jpg" alt="Bali" />
                 <div class="info">
                     <h3>Bali, ID - Rp.400k</h3>
@@ -89,7 +89,7 @@
                     <p>Bali, tempat dimana keunikan selalu menonjol dimata orang” Lokal maupun International.</p>
                 </div>
             </div>
-            <div class="destination-card">
+            <div class="destination-card" data-category="Popular,Recommend">
                 <img src="asset/hawaii.jpg" alt="Hawaii" />
                 <div class="info">
                     <h3>Hawaii, US - Rp.200k</h3>
@@ -97,7 +97,7 @@
                     <p>Tempat favorit semua orang, dimana Adat lokal disana unik & pemandangan yg sangat apik!</p>
                 </div>
             </div>
-            <div class="destination-card">
+            <div class="destination-card" data-category="Recommend">
                 <img src="asset/padang.png" alt="Padang" />
                 <div class="info">
                     <h3>Padang, ID - Rp.600k</h3>
@@ -105,7 +105,7 @@
                     <p>Padang, tempat dimana makanan khas Terenak berasal & Tempat Turisme yg sangat Indah.</p>
                 </div>
             </div>
-            <div class="destination-card">
+            <div class="destination-card" data-category="Recommend,Trending">
                 <img src="asset/lombok.jpg" alt="Lombok" />
                 <div class="info">
                     <h3>Lombok, ID - Rp.500k</h3>
@@ -113,7 +113,7 @@
                     <p>Lombok, dimana Sirkuit Mandalika terletak & Pantai terindah berada.</p>
                 </div>
             </div>
-            <div class="destination-card">
+            <div class="destination-card" data-category="Trending,Popular">
                 <img src="asset/raja_ampat.jpg" alt="Raja Ampat" />
                 <div class="info">
                     <h3>Raja Ampat, ID - Rp.1000k</h3>
@@ -121,7 +121,7 @@
                     <p>Destinasi paling apik dengan pemandangan yang Indah, cocok sekali bagi anda yg ingin healing!</p>
                 </div>
             </div>
-            <div class="destination-card">
+            <div class="destination-card" data-category="Popular,Trending">
                 <img src="asset/borneo.jpg" alt="Borneo" />
                 <div class="info">
                     <h3>Borneo, ID - Rp.1200k</h3>
@@ -131,16 +131,7 @@
             </div>
         </div>
 
-        <div class="pagination">
-            <button>Back Page</button>
-            <button>1</button>
-            <button>2</button>
-            <button class="active">3</button>
-            <button>4</button>
-            <button>...</button>
-            <button>10</button>
-            <button>Next Page</button>
-        </div>
+        <!-- <div class="pagination" id="pagination"></div> -->
     </div>
 
     <div class="grid-cols-2">
@@ -260,7 +251,7 @@
                 </div>
                 <div class="rating">4.5</div>
                 <p class="desc">
-                    Pakai VSTravel benar² Gampang cuyy, tinggal klik-klik-klik selesai dah booking, langsung shoosh ke
+                    Pakai BeeJoys benar² Gampang cuyy, tinggal klik-klik-klik selesai dah booking, langsung shoosh ke
                     Jepang ya gak ya wkwk, Terbaik dahh pokoknyaa! ✈️🎉
                 </p>
             </div>
@@ -276,7 +267,7 @@
                 </div>
                 <div class="rating">4.0</div>
                 <p class="desc">
-                    Dulu suka bingung kalau mau pesan tiket pesawat, tapi sejak kenal VSTravel, semuanya jadi super
+                    Dulu suka bingung kalau mau pesan tiket pesawat, tapi sejak kenal BeeJoys, semuanya jadi super
                     praktis! Tinggal klik-klik aja, booking langsung selesai. Udah gitu prosesnya cepet banget lagi!
                     Bener-bener recommended! 🎉✈️
                 </p>
@@ -293,7 +284,7 @@
                 </div>
                 <div class="rating">4.9</div>
                 <p class="desc">
-                    Pertama kali coba VSTravel dan langsung jatuh cinta! Proses bookingnya super gampang, tinggal
+                    Pertama kali coba BeeJoys dan langsung jatuh cinta! Proses bookingnya super gampang, tinggal
                     klik-klik doang, gak pake ribet! Udah gitu cepet banget, langsung dapet tiketnya! Pokoknya top
                     banget buat yang suka jalan-jalan! 🎊🎉
                 </p>
@@ -311,7 +302,7 @@
                 <div class="rating">4.3</div>
                 <p class="desc">
                     Tur dunia itu seru, tapi urusan tiket bisa jadi PR besar kalau nggak pakai yang praktis. Untung ada
-                    VSTravel! Booking tiketnya gampang banget, tinggal klik-klik, langsung terbang. Bener-bener
+                    BeeJoys! Booking tiketnya gampang banget, tinggal klik-klik, langsung terbang. Bener-bener
                     lifesaver buat musisi yang sibuk kayak aku! 🎤✈️
                 </p>
             </div>
@@ -360,19 +351,101 @@
 
         <div class="bottom">
             <a href="">Privacy Policy</a>
-            <p>Copyright ⓒ 2024 VsTravel</p>
+            <p>Copyright ⓒ 2024 BeeJoys</p>
         </div>
     </div>
 
 
     <script>
+
         function openSidebar() {
             document.getElementById("mySidebar").style.width = "100%";
+            document.getElementById("sideButton1").style.opacity = "100%";
+            document.getElementById("sideButton2").style.opacity = "100%";
+            document.getElementById("sideButton3").style.opacity = "100%";
+            document.getElementById("sideButton4").style.opacity = "100%";
+            document.getElementById("sideButton5").style.opacity = "100%";
         }
 
         function closeSidebar() {
             document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("sideButton1").style.opacity = "0";
+            document.getElementById("sideButton2").style.opacity = "0";
+            document.getElementById("sideButton3").style.opacity = "0";
+            document.getElementById("sideButton4").style.opacity = "0";
+            document.getElementById("sideButton5").style.opacity = "0";
         }
+
+        const cardsPerPage = 6;
+        let currentPage = 1;
+        let activeCategory = 'All';
+
+        const allCards = Array.from(document.querySelectorAll('.destination-card'));
+        // const paginationContainer = document.getElementById('pagination');
+        const filterButtons = document.querySelectorAll('.selectionButton button');
+
+        function getFilteredCards() {
+            if (activeCategory === 'All') return allCards;
+            return allCards.filter(card => {
+                const categories = card.dataset.category.split(',').map(cat => cat.trim());
+                return categories.includes(activeCategory);
+            });
+        }
+
+        function showPage(page) {
+            const filteredCards = getFilteredCards();
+            const start = (page - 1) * cardsPerPage;
+            const end = start + cardsPerPage;
+
+            allCards.forEach(card => card.style.display = 'none');
+            filteredCards.slice(start, end).forEach(card => card.style.display = 'block');
+
+            // updatePagination(page, filteredCards.length);
+        }
+
+        // Untuk Pagination
+
+        // function updatePagination(activePage, totalItems) {
+        //     const pageCount = Math.ceil(totalItems / cardsPerPage);
+        //     paginationContainer.innerHTML = '';
+
+        //     const createButton = (text, page, isActive = false) => {
+        //         const btn = document.createElement('button');
+        //         btn.textContent = text;
+        //         if (isActive) btn.classList.add('active');
+        //         btn.addEventListener('click', () => {
+        //             currentPage = page;
+        //             showPage(currentPage);
+        //         });
+        //         return btn;
+        //     };
+
+        //     if (activePage > 1) {
+        //         paginationContainer.appendChild(createButton('« Prev', activePage - 1));
+        //     }
+
+        //     for (let i = 1; i <= pageCount; i++) {
+        //         paginationContainer.appendChild(createButton(i, i, i === activePage));
+        //     }
+
+        //     if (activePage < pageCount) {
+        //         paginationContainer.appendChild(createButton('Next »', activePage + 1));
+        //     }
+        // }
+
+        // Utk filtering bekerja
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                activeCategory = button.textContent;
+                currentPage = 1;
+                showPage(currentPage);
+            });
+        });
+
+        // Initial load
+        showPage(currentPage);
     </script>
 
 
