@@ -352,11 +352,37 @@ header>* {
 }
 
 .testimoni-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 30px;
+    display: flex; /* Membuat kartu berjajar */
+    gap: 20px;     /* Jarak antar kartu */
+    /* overflow: hidden; */ /* Bisa ditambahkan jika ada efek transisi slide */
+    /* justify-content: center; */ /* Untuk menengahkan jika hanya ada 1 kartu */
     max-width: 1200px;
     margin: 0 auto;
+}
+
+
+.testimonial-card { /* Class tambahan untuk membedakan dari kartu destinasi jika perlu styling khusus */
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    position: relative;
+    /* Mengatur lebar kartu agar sesuai dengan testimonialsPerPage */
+    flex: 0 0 calc(50% - 10px); /* Untuk 2 kartu per baris, 10px adalah setengah dari gap */
+    box-sizing: border-box; /* Agar padding dan border tidak menambah lebar total */
+    min-width: 280px; /* Lebar minimum kartu */
+}
+
+/* Untuk tampilan mobile, satu kartu per baris */
+@media (max-width: 767px) {
+    .testimoni-container {
+        flex-direction: column; /* Tumpuk kartu secara vertikal */
+        align-items: center; /* Tengahkan kartu */
+    }
+    .testimonial-card {
+        flex: 0 0 90%; /* Kartu mengambil hampir seluruh lebar */
+        max-width: 400px; /* Batasi lebar maksimum */
+    }
 }
 
 .card {

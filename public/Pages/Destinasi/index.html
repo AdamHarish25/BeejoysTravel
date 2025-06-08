@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cari Destinasi yang kamu inginkan</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Stylesheet untuk halaman Destinasi -->
+</head>
+
+<body>
+    <header>
+        <img src="../../asset/Logo.png" alt="Logo" class="logo" />
+        <nav class="navbar">
+            <ul>
+                <li><a href="../../index.html">Beranda</a></li>
+                <li><a href="../TravelNow/index.html">Travel Now</a></li>
+                <li><a href="../Kontak/index.html">Kontak Kami</a></li>
+                <li><a href="../Tentang/index.html">Tentang</a></li>
+            </ul>
+        </nav>
+        <button class="open-sidebar-btn" onclick="openSidebar()">☰</button>
+    </header>
+
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">×</a>
+        <a id="sideButton1" href="../../index.html">Beranda</a>
+        <a id="sideButton2" href="./index.html">Destinasi</a>
+        <a id="sideButton3" href="../TravelNow/index.html">Travel Now</a>
+        <a id="sideButton4" href="../Kontak/index.html">Kontak Kami</a>
+        <a id="sideButton5" href="../Tentang/index.html">Tentang</a>
+    </div>
+
+    <div class="guide">
+        <div class="guideHead">
+            <h1>Kumpulan Destinasi Liburan Anda Disini!</h1>
+            <p>Cek Destinasi Liburan terbaik minggu ini yang mungkin kamu suka</p>
+        </div>
+
+        <div class="search-box">
+            <input type="text" class="tujuan" id="destinasiSearchInput" placeholder="📍 Cari tempat tujuan mu disini...." />
+            <hr>
+            <button id="destinasiSearchButton" aria-label="Cari Destinasi">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                    viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="selectionButton">
+            <button class="active">All</button>
+            <button>Trending</button>
+            <button>Popular</button>
+            <button>Recommend</button>
+            <!-- Tambahkan kategori lain sesuai data di Firebase jika perlu -->
+        </div>
+
+        <div class="destination-grid">
+            <p class="loading-message" style="text-align: center; padding: 20px;">Memuat destinasi...</p>
+        </div>
+
+        <div class="pagination" id="pagination">
+            <!-- Kontrol paginasi akan dirender di sini -->
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="upper">
+            <div class="logoDesc">
+                <img src="../../asset/Logo.png" class="logo" />
+                <p>
+                    Kenyamanan & Keamanan adalah Prioritas Kami yg kami sediakan hanya untuk anda.
+                </p>
+            </div>
+            <div class="footMenu">
+                <div>
+                    <h2>Tentang</h2>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="../Kontak/index.html">Kontak Kami</a></li>
+                        <li><a href="#">Cara Booking</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Produk</h2>
+                    <ul>
+                        <li><a href="./index.html">Destinasi</a></li>
+                        <li><a href="#">Jadwal Terbang</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Social</h2>
+                    <ul>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="bottom">
+            <a href="#">Privacy Policy</a>
+            <p>Copyright ⓒ 2024 BeeJoys</p>
+        </div>
+    </div>
+
+    <!-- Firebase Config -->
+    <!-- Pastikan path ini benar. Jika firebase-config.js ada di public/js/, ubah src menjadi "../../js/firebase-config.js" -->
+    <script type="module" src="../../firebase-config.js"></script>
+
+    <!-- Page-specific script for Destinasi -->
+    <script type="module">
+        // Impor fungsi yang dibutuhkan dari Firebase SDK dan config Anda
+        import { db } from '../../firebase-config.js'; // Sesuaikan path jika firebase-config.js ada di tempat lain
+        import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js"; // Gunakan versi yang sesuai dari Firebase
+
+        const currentWindow = window.innerWidth;
+        const cardsPerPage = currentWindow < 768 ? (currentWindow < 576 ? 1 : 4) : 3; // Jumlah kartu per halaman, bisa disesuaikan
+        let currentPage = 1;
+        let activeCategory = 'All'; // Kategori filter aktif
+        let allFetchedDestinations = []; // Menyimpan semua data destinasi dari Firebase
+
+        const destinationGrid = document.querySelector('.destination-grid');
+        const paginationContainer = document.getElementById('pagination');
+        const filterButtons = document.querySelectorAll('.selectionButton button');
+        const searchInput = document.getElementById('destinasiSearchInput');
+        const loadingMessage = document.querySelector('.loading-message');
+
+        /**
+         * Mengambil data destinasi dari Firebase Firestore.
+         */
+        async function fetchDestinationsFromFirebase() {
+            if (loadingMessage) loadingMessage.style.display = 'block';
+            destinationGrid.innerHTML = ''; // Kosongkan grid saat memuat
+            paginationContainer.innerHTML = ''; // Kosongkan paginasi juga
+
+            try {
+                const destinationsCollectionRef = collection(db, 'destinations');
+                // Urutkan berdasarkan nama secara default. Anda bisa mengganti 'name' dengan field lain seperti 'createdAt'
+                const q = query(destinationsCollectionRef, orderBy('name', 'asc'));
+                const querySnapshot = await getDocs(q);
+
+                allFetchedDestinations = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                if (allFetchedDestinations.length === 0 && loadingMessage) {
+                    destinationGrid.innerHTML = '<p style="text-align: center; padding: 20px;">Belum ada destinasi yang tersedia.</p>';
+                }
+                applyFiltersAndDisplay(); // Tampilkan data setelah diambil
+            } catch (error) {
+                console.error("Error fetching destinations: ", error);
+                if (loadingMessage) {
+                    destinationGrid.innerHTML = '<p style="text-align: center; padding: 20px; color: red;">Gagal memuat destinasi. Silakan coba lagi nanti.</p>';
+                }
+            } finally {
+                if (loadingMessage) loadingMessage.style.display = 'none';
+            }
+        }
+
+        /**
+         * Membuat HTML untuk satu kartu destinasi.
+         */
+        function createDestinationCardHTML(destinationData) {
+            const imageSource = destinationData.imageUrl && destinationData.imageUrl.startsWith('http')
+                ? destinationData.imageUrl
+                : `../../asset/${destinationData.imageUrl || 'default-placeholder.jpg'}`; // Fallback jika imageUrl kosong
+
+            const priceDisplay = destinationData.price ? `Rp.${(destinationData.price / 1000).toLocaleString()}k` : 'Harga tidak tersedia';
+            const categoriesString = Array.isArray(destinationData.categories) ? destinationData.categories.join(',') : '';
+
+            return `
+                <div class="destination-card" data-id="${destinationData.id}" data-category="${categoriesString}">
+                    <img src="${imageSource}" alt="${destinationData.name || 'Destinasi'}" />
+                    <div class="info">
+                        <h3>${destinationData.name || 'Nama Destinasi'} - ${priceDisplay}</h3>
+                        <hr>
+                        <p>${destinationData.description || 'Deskripsi tidak tersedia.'}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        /**
+         * Menerapkan filter (kategori dan pencarian) dan memanggil fungsi untuk menampilkan kartu.
+         */
+        function applyFiltersAndDisplay() {
+            let filteredDestinations = [...allFetchedDestinations];
+
+            // Filter berdasarkan kategori aktif
+            if (activeCategory !== 'All') {
+                filteredDestinations = filteredDestinations.filter(dest =>
+                    Array.isArray(dest.categories) && dest.categories.includes(activeCategory)
+                );
+            }
+
+            // Filter berdasarkan input pencarian
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            if (searchTerm) {
+                filteredDestinations = filteredDestinations.filter(dest =>
+                    (dest.name && dest.name.toLowerCase().includes(searchTerm)) ||
+                    (dest.description && dest.description.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            displayPaginatedItems(filteredDestinations);
+        }
+
+        /**
+         * Menampilkan item yang sudah dipaginasi KE GRID dan MERENDER KONTROL PAGINASI.
+         */
+        function displayPaginatedItems(items) {
+            destinationGrid.innerHTML = '';
+            paginationContainer.innerHTML = '';
+
+            if (!items || items.length === 0) {
+                if (allFetchedDestinations.length > 0) {
+                    destinationGrid.innerHTML = '<p style="text-align: center; padding: 20px;">Tidak ada destinasi yang cocok dengan filter Anda.</p>';
+                }
+                // Pesan "Belum ada destinasi" sudah ditangani di fetchDestinationsFromFirebase
+                return;
+            }
+
+            const start = (currentPage - 1) * cardsPerPage;
+            const end = start + cardsPerPage;
+            const paginatedItemsToDisplay = items.slice(start, end);
+
+            paginatedItemsToDisplay.forEach(item => {
+                destinationGrid.innerHTML += createDestinationCardHTML(item);
+            });
+
+            renderPaginationControls(items.length);
+        }
+
+        /**
+         * Membuat dan merender kontrol paginasi.
+         */
+        function renderPaginationControls(totalItems) {
+            const pageCount = Math.ceil(totalItems / cardsPerPage);
+            // paginationContainer.innerHTML = ''; // Sudah dikosongkan di displayPaginatedItems
+
+            if (pageCount <= 1) {
+                return; // Tidak perlu paginasi jika hanya 1 halaman atau kurang
+            }
+
+            const createPageButton = (text, pageNumber, isActive = false, isDisabled = false) => {
+                const button = document.createElement('button');
+                button.textContent = text;
+                if (isActive) button.classList.add('active');
+                button.disabled = isDisabled;
+                button.addEventListener('click', (e) => {
+                    e.preventDefault(); // Mencegah perilaku default jika ada
+                    if (isDisabled) return;
+                    currentPage = pageNumber;
+                    applyFiltersAndDisplay();
+                });
+                return button;
+            };
+
+            // Tombol "Prev"
+            if (currentPage > 1) {
+                paginationContainer.appendChild(
+                    createPageButton('« Prev', currentPage - 1)
+                );
+            }
+
+            // Tombol nomor halaman
+            // Untuk menghindari terlalu banyak tombol, bisa ditambahkan logika ... (ellipsis)
+            // Namun untuk sekarang, tampilkan semua nomor halaman
+            for (let i = 1; i <= pageCount; i++) {
+                paginationContainer.appendChild(createPageButton(i, i, i === currentPage));
+            }
+
+            // Tombol "Next"
+            if (currentPage < pageCount) {
+                paginationContainer.appendChild(
+                    createPageButton('Next »', currentPage + 1)
+                );
+            }
+        }
+
+        // Event listener untuk tombol filter kategori
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                activeCategory = button.textContent.trim();
+                currentPage = 1; // Kembali ke halaman pertama saat filter berubah
+                applyFiltersAndDisplay();
+            });
+        });
+
+        // Event listener untuk input pencarian (saat pengguna mengetik)
+        let searchDebounceTimer;
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(() => {
+                currentPage = 1; // Kembali ke halaman pertama saat pencarian berubah
+                applyFiltersAndDisplay();
+            }, 300); // Debounce 300ms
+        });
+
+
+        // --- Sidebar Functions ---
+        // Pastikan fungsi ini global jika dipanggil dari atribut onclick di HTML
+        window.openSidebar = function () {
+            const sidebar = document.getElementById("mySidebar");
+            if (sidebar) {
+                sidebar.style.width = "100%";
+                // Jika Anda memiliki ID pada tombol-tombol di sidebar:
+                // document.getElementById("sideButton1").style.opacity = "1"; // dst.
+            }
+            document.getElementById("sideButton1").style.opacity = "100%";
+            document.getElementById("sideButton2").style.opacity = "100%";
+            document.getElementById("sideButton3").style.opacity = "100%";
+            document.getElementById("sideButton4").style.opacity = "100%";
+            document.getElementById("sideButton5").style.opacity = "100%";
+        }
+        window.closeSidebar = function () {
+            const sidebar = document.getElementById("mySidebar");
+            if (sidebar) {
+                sidebar.style.width = "0";
+                // document.getElementById("sideButton1").style.opacity = "0"; // dst.
+            }
+            document.getElementById("sideButton1").style.opacity = "0";
+            document.getElementById("sideButton2").style.opacity = "0";
+            document.getElementById("sideButton3").style.opacity = "0";
+            document.getElementById("sideButton4").style.opacity = "0";
+            document.getElementById("sideButton5").style.opacity = "0";
+        }
+
+        // Panggil fungsi untuk mengambil dan menampilkan destinasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchDestinationsFromFirebase();
+        });
+    </script>
+</body>
+</html>

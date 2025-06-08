@@ -97,87 +97,19 @@
 
 
     <div class="prioritas">
-
         <div class="testimoni-header">
-            <button>
-                <img src="../../asset/left.png" />
+            <button id="prevTestimonial" aria-label="Testimoni Sebelumnya">
+                <img src="../../asset/left.png" alt="Panah Kiri" />
             </button>
             <h2>Customer Happy Prioritas Kami</h2>
-            <button>
-                <img src="../../asset/right.png" />
+            <button id="nextTestimonial" aria-label="Testimoni Berikutnya">
+                <img src="../../asset/right.png" alt="Panah Kanan" />
             </button>
         </div>
-
-        <div class="testimoni-container">
-            <!-- Testimoni 1 -->
-            <div class="card">
-                <div class="profile">
-                    <img src="../../asset/avatar/bayuPraz.jpg" alt="Bayu">
-                    <div class="profile-info">
-                        <span class="name">Bayu Praz Manan</span>
-                        <span class="title">Vlogger sejati</span>
-                    </div>
-                </div>
-                <div class="rating">4.5</div>
-                <p class="desc">
-                    Pakai BeeJoys benar² Gampang cuyy, tinggal klik-klik-klik selesai dah booking, langsung shoosh ke
-                    Jepang ya gak ya wkwk, Terbaik dahh pokoknyaa! ✈️🎉
-                </p>
-            </div>
-
-            <!-- Testimoni 2 -->
-            <div class="card">
-                <div class="profile">
-                    <img src="../../asset/avatar/Agus.jpg" alt="Agus">
-                    <div class="profile-info">
-                        <span class="name">Agus Diponogoro</span>
-                        <span class="title">Traveller sejati</span>
-                    </div>
-                </div>
-                <div class="rating">4.0</div>
-                <p class="desc">
-                    Dulu suka bingung kalau mau pesan tiket pesawat, tapi sejak kenal BeeJoys, semuanya jadi super
-                    praktis! Tinggal klik-klik aja, booking langsung selesai. Udah gitu prosesnya cepet banget lagi!
-                    Bener-bener recommended! 🎉✈️
-                </p>
-            </div>
-
-            <!-- Testimoni 3 -->
-            <div class="card">
-                <div class="profile">
-                    <img src="../../asset/avatar/missBule.jpg" alt="Miss Bule">
-                    <div class="profile-info">
-                        <span class="name">Miss Bule</span>
-                        <span class="title">Youtuber</span>
-                    </div>
-                </div>
-                <div class="rating">4.9</div>
-                <p class="desc">
-                    Pertama kali coba BeeJoys dan langsung jatuh cinta! Proses bookingnya super gampang, tinggal
-                    klik-klik doang, gak pake ribet! Udah gitu cepet banget, langsung dapet tiketnya! Pokoknya top
-                    banget buat yang suka jalan-jalan! 🎊🎉
-                </p>
-            </div>
-
-            <!-- Testimoni 4 -->
-            <div class="card">
-                <div class="profile">
-                    <img src="../../asset/avatar/nikkei.jpg" alt="Nikkei">
-                    <div class="profile-info">
-                        <span class="name">Nikkei Lim</span>
-                        <span class="title">Penyanyi Global</span>
-                    </div>
-                </div>
-                <div class="rating">4.3</div>
-                <p class="desc">
-                    Tur dunia itu seru, tapi urusan tiket bisa jadi PR besar kalau nggak pakai yang praktis. Untung ada
-                    BeeJoys! Booking tiketnya gampang banget, tinggal klik-klik, langsung terbang. Bener-bener
-                    lifesaver buat musisi yang sibuk kayak aku! 🎤✈️
-                </p>
-            </div>
+        <div class="testimoni-container" id="testimonialContainer">
+            <!-- Testimoni akan dimuat di sini oleh JavaScript -->
+            <p class="loading-message-testimonials" style="text-align: center; padding: 20px;">Memuat testimoni...</p>
         </div>
-
-
     </div>
 
     <div class="footer">
@@ -223,8 +155,115 @@
             <p>Copyright ⓒ 2024 BeeJoys</p>
         </div>
     </div>
+    <script type="module" src="../../firebase-config.js"></script>
 
-    <script>
+
+    <script type="module">
+        import { db } from '../../firebase-config.js'; // Pastikan path ini benar
+        import { collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+ // --- Bagian 3: Testimoni Pelanggan dari Firebase dengan Carousel ---
+        const testimonialContainer = document.getElementById('testimonialContainer');
+        const prevTestimonialButton = document.getElementById('prevTestimonial');
+        const nextTestimonialButton = document.getElementById('nextTestimonial');
+        const loadingMessageTestimonials = document.querySelector('.loading-message-testimonials');
+
+        let allTestimonials = [];
+        let currentTestimonialIndex = 0;
+        const testimonialsPerPage = window.innerWidth < 768 ? 1 : 2; // Tampilkan 1 di mobile, 2 di desktop
+
+        async function fetchTestimonials() {
+            if (loadingMessageTestimonials) loadingMessageTestimonials.style.display = 'block';
+            if (testimonialContainer) testimonialContainer.innerHTML = '';
+
+            try {
+                const testimonialsCollectionRef = collection(db, 'testimonials'); // Ganti 'testimonials' jika nama koleksi Anda berbeda
+                // Urutkan berdasarkan field 'order' jika ada, atau 'name'
+                const q = query(testimonialsCollectionRef, orderBy('order', 'asc')); // 'asc' untuk urutan menaik
+                const querySnapshot = await getDocs(q);
+
+                allTestimonials = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                if (allTestimonials.length === 0 && testimonialContainer) {
+                    testimonialContainer.innerHTML = '<p style="text-align: center; padding: 20px;">Belum ada testimoni.</p>';
+                } else if (allTestimonials.length > 0) {
+                    displayTestimonials();
+                }
+            } catch (error) {
+                console.error("Error fetching testimonials: ", error);
+                if (testimonialContainer) testimonialContainer.innerHTML = '<p style="text-align: center; padding: 20px; color:red;">Gagal memuat testimoni.</p>';
+            } finally {
+                if (loadingMessageTestimonials) loadingMessageTestimonials.style.display = 'none';
+                updateCarouselButtons();
+            }
+        }
+
+        function createTestimonialCardHTML(testimonialData) {
+            const avatarSource = testimonialData.avatarUrl && testimonialData.avatarUrl.startsWith('http')
+                ? testimonialData.avatarUrl
+                : `../../asset/${testimonialData.avatarUrl || 'avatar/nikkei.jpg'}`; // Path dari root public/
+
+            return `
+        <div class="card testimonial-card">
+            <div class="profile">
+                <img src="${avatarSource}" alt="${testimonialData.name || 'Pelanggan'}">
+                <div class="profile-info">
+                    <span class="name">${testimonialData.name || 'Nama Pelanggan'}</span>
+                    <span class="title">${testimonialData.title || 'Status'}</span>
+                </div>
+            </div>
+            ${testimonialData.rating ? `<div class="rating">${testimonialData.rating.toFixed(1)}</div>` : ''}
+            <p class="desc">${testimonialData.testimonialText || 'Testimoni tidak tersedia.'}</p>
+        </div>
+    `;
+        }
+
+        function displayTestimonials() {
+            if (!testimonialContainer || allTestimonials.length === 0) return;
+
+            testimonialContainer.innerHTML = ''; // Kosongkan kontainer
+
+            // Tentukan testimoni yang akan ditampilkan berdasarkan index saat ini dan jumlah per halaman
+            const endIndex = currentTestimonialIndex + testimonialsPerPage;
+            const testimonialsToShow = allTestimonials.slice(currentTestimonialIndex, endIndex);
+
+            testimonialsToShow.forEach(testimonial => {
+                testimonialContainer.innerHTML += createTestimonialCardHTML(testimonial);
+            });
+            updateCarouselButtons();
+        }
+
+        function updateCarouselButtons() {
+            if (prevTestimonialButton) {
+                prevTestimonialButton.disabled = currentTestimonialIndex === 0;
+            }
+            if (nextTestimonialButton) {
+                nextTestimonialButton.disabled = currentTestimonialIndex + testimonialsPerPage >= allTestimonials.length;
+            }
+        }
+
+        if (prevTestimonialButton) {
+            prevTestimonialButton.addEventListener('click', () => {
+                currentTestimonialIndex -= testimonialsPerPage;
+                if (currentTestimonialIndex < 0) {
+                    currentTestimonialIndex = 0;
+                }
+                displayTestimonials();
+            });
+        }
+
+        if (nextTestimonialButton) {
+            nextTestimonialButton.addEventListener('click', () => {
+                if (currentTestimonialIndex + testimonialsPerPage < allTestimonials.length) {
+                    currentTestimonialIndex += testimonialsPerPage;
+                }
+                displayTestimonials();
+            });
+        }
+
         function openSidebar() {
             document.getElementById("mySidebar").style.width = "100%";
             document.getElementById("sideButton1").style.opacity = "100%";
@@ -242,6 +281,13 @@
             document.getElementById("sideButton4").style.opacity = "0";
             document.getElementById("sideButton5").style.opacity = "0";
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            if (testimonialContainer) { // Hanya jalankan jika elemen kontainer testimoni ada
+                fetchTestimonials();
+            }
+        });
     </script>
 
 </body>

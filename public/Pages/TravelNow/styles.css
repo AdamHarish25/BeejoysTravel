@@ -522,41 +522,41 @@ footer {
 }
 
 /* Error styling */
-.error-input {
-  border-color: #e74c3c !important;
-  background-color: rgba(231, 76, 60, 0.05);
-}
-
-#error-container {
+#message-container { /* Styling dasar untuk container */
   margin-top: 20px;
   padding: 15px;
   border-radius: 5px;
-  display: none;
+  display: none; /* Awalnya disembunyikan */
   font-weight: 500;
 }
 
-#error-container.error {
+#message-container.error { /* Styling saat ada error */
   background-color: #ffebee;
   border: 1px solid #e74c3c;
   color: #e74c3c;
 }
 
-#error-container.success {
+#message-container.success { /* Styling saat sukses */
   background-color: #e8f5e9;
   border: 1px solid #2ecc71;
   color: #2ecc71;
 }
 
-#error-container ul {
+#message-container ul {
   margin: 0;
   padding-left: 20px;
 }
 
-#error-container ul li {
+#message-container ul li {
   margin-bottom: 5px;
   list-style-type: disc;
 }
 
-#error-container ul li:last-child {
+#message-container ul li:last-child {
   margin-bottom: 0;
+}
+
+.error-input { /* Styling untuk input yang tidak valid */
+  border-color: #e74c3c !important; /* !important untuk override jika ada style lain */
+  background-color: rgba(231, 76, 60, 0.05);
 }

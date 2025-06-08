@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeJoys - Pesan Tiket Travel Anda</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Pastikan path styles.css benar -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <img src="../../asset/Logo.png" alt="Logo" class="logo" />
+        <nav class="navbar">
+            <ul>
+                <li><a href="../Destinasi/index.html">Destinasi</a></li>
+                <li><a href="../../index.html">Beranda</a></li>
+                <li><a href="../Kontak/index.html">Kontak</a></li>
+                <li><a href="../Tentang/index.html">Tentang</a></li>
+            </ul>
+        </nav>
+        <button class="open-sidebar-btn" onclick="openSidebar()">☰</button>
+    </header>
+
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">×</a>
+        <a id="sideButton1" href="../../index.html">Beranda</a>
+        <a id="sideButton2" href="../Destinasi/index.html">Destinasi</a>
+        <a id="sideButton3" href="./index.html">Travel Now</a>
+        <a id="sideButton4" href="../Kontak/index.html">Kontak Kami</a>
+        <a id="sideButton5" href="../Tentang/index.html">Tentang</a>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <section class="benefits-section">
+                <h2>Keuntungan Bepergian Bersama VS Travel</h2>
+                <div class="benefits-container">
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Keamanan Terjamin</h3>
+                        <p>Semua perjalanan kami dilengkapi dengan protokol keamanan yang ketat dan asuransi perjalanan.
+                        </p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-money-bill-wave"></i></div>
+                        <h3>Harga Terbaik</h3>
+                        <p>Kami menawarkan harga yang kompetitif dengan jaminan kualitas layanan terbaik.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-headset"></i></div>
+                        <h3>Layanan 24/7</h3>
+                        <p>Tim dukungan pelanggan kami siap membantu Anda kapan saja dan di mana saja.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-route"></i></div>
+                        <h3>Banyak Destinasi</h3>
+                        <p>Pilihan destinasi yang beragam untuk memenuhi kebutuhan liburan Anda.</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="travel-form-container">
+                <div class="sidebarForm">
+                    <img src="../../asset/travelNow.png" alt="Travel illustration with airplane and trees"
+                        class="sidebar-image">
+                </div>
+
+                <form class="travel-form" id="mainTravelForm"> <!-- Tambahkan ID ke form -->
+                    <h2>Kemana kamu berencana untuk pergi?</h2>
+
+                    <h3>Informasi Pribadi</h3>
+                    <div class="form-group">
+                        <input type="text" id="nama-lengkap" placeholder="Nama Lengkap" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="nomor-telepon" placeholder="Nomor Telepon (cth: 08123456789)" required
+                            pattern="^08[0-9]{8,11}$">
+                    </div>
+
+                    <h3>Informasi Tujuan</h3>
+                    <div class="form-group">
+                        <input type="text" id="tempat" placeholder="Tempat/Kota" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="dari" placeholder="Dari Bandara" required>
+                    </div>
+
+                    <h3>Kapan ?</h3>
+                    <div class="date-inputs">
+                        <div class="form-group">
+                            <div class="date-input">
+                                <input type="text" id="tanggal-berangkat" placeholder="Tanggal Berangkat" required>
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="date-input">
+                                <input type="text" id="tanggal-kembali" placeholder="Tanggal Kembali">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Berapa banyak orang?</h3>
+                    <div class="passenger-inputs">
+                        <div class="form-group">
+                            <input type="number" id="jumlah-penumpang" placeholder="Jumlah penumpang" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="dewasa" placeholder="Dewasa (18+)" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="number" id="anak" placeholder="Anak-Anak (0-17)" min="0">
+                        </div>
+                    </div>
+
+                    <h3>Preferensi Tambahan</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="asuransi">
+                            <span class="checkmark"></span>
+                            Tambahkan Asuransi Perjalanan
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="makanan-khusus">
+                            <span class="checkmark"></span>
+                            Permintaan Makanan Khusus
+                        </label>
+                    </div>
+
+                    <h3>Kelas Penerbangan</h3>
+                    <div class="form-group">
+                        <select id="kelas-penerbangan" required>
+                            <option value="">Pilih Kelas Penerbangan</option>
+                            <option value="ekonomi">Ekonomi</option>
+                            <option value="bisnis">Bisnis</option>
+                            <option value="first">First Class</option>
+                        </select>
+                    </div>
+
+                    <button type="button" class="btn-kirim" id="btnKirimBooking">Kirim</button>
+                    <div id="message-container" class="message-container"></div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="../../asset/Logo.png" class="logo" alt="BeeJoys Logo" />
+                    <p>Kenyamanan & Keamanan adalah Prioritas Kami yg kami sediakan hanya untuk anda.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Tentang</h3>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="../Kontak/index.html">Kontak Kami</a></li>
+                            <li><a href="#">Cara Booking</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Produk</h3>
+                        <ul>
+                            <li><a href="../Destinasi/index.html">Destinasi</a></li>
+                            <li><a href="#">Jadwal Terbang</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Social</h3>
+                        <ul>
+                            <li><a href="#">Facebook</a></li>
+                            <li><a href="#">Instagram</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="privacy-policy"><a href="#">Privacy Policy</a></p>
+                <p class="copyright">Copyright © 2024 BeeJoys</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="../../firebase-config.js"></script>
+    <script type="module">
+        import { db } from '../../firebase-config.js'; // Pastikan path ini benar
+        import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js"; // Gunakan versi Firebase yang sesuai
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- 1. Pre-fill form from URL parameters ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const tujuanFromHome = urlParams.get('tujuan');
+            const tanggalFromHome = urlParams.get('tanggal'); // Ini akan dalam format YYYY-MM-DD
+            const anggotaFromHome = urlParams.get('anggota');
+
+            // Referensi ke elemen form
+            const formInputs = {
+                fullName: document.getElementById('nama-lengkap'),
+                phoneNumber: document.getElementById('nomor-telepon'),
+                destinationPlace: document.getElementById('tempat'),
+                departureAirport: document.getElementById('dari'),
+                departureDateStr: document.getElementById('tanggal-berangkat'),
+                returnDateStr: document.getElementById('tanggal-kembali'),
+                totalPassengers: document.getElementById('jumlah-penumpang'),
+                adults: document.getElementById('dewasa'),
+                children: document.getElementById('anak'),
+                travelInsurance: document.getElementById('asuransi'),
+                specialFoodRequest: document.getElementById('makanan-khusus'),
+                flightClass: document.getElementById('kelas-penerbangan')
+            };
+
+            if (tujuanFromHome && formInputs.destinationPlace) {
+                formInputs.destinationPlace.value = tujuanFromHome;
+            }
+            if (tanggalFromHome && formInputs.departureDateStr) {
+                formInputs.departureDateStr.value = tanggalFromHome; // Format YYYY-MM-DD
+                formInputs.departureDateStr.type = 'date'; // Langsung set ke type date
+            }
+            if (anggotaFromHome && formInputs.totalPassengers) {
+                const jumlahAnggota = parseInt(anggotaFromHome);
+                if (!isNaN(jumlahAnggota) && jumlahAnggota > 0) {
+                    formInputs.totalPassengers.value = jumlahAnggota;
+                    if (formInputs.adults) { // Asumsikan semua anggota awal adalah dewasa
+                        formInputs.adults.value = jumlahAnggota;
+                    }
+                }
+            }
+
+            // --- 2. Date picker functionality (blur/focus) ---
+            const dateInputs = document.querySelectorAll('#tanggal-berangkat, #tanggal-kembali');
+            dateInputs.forEach(input => {
+                input.addEventListener('focus', function () {
+                    this.type = 'date';
+                });
+                input.addEventListener('blur', function () {
+                    if (!this.value) {
+                        this.type = 'text'; // Kembali ke text jika kosong agar placeholder terlihat
+                    }
+                });
+                // Jika sudah ada value (misal dari URL), pastikan tetap type date
+                if (input.value) {
+                    input.type = 'date';
+                }
+            });
+
+            // --- 3. Booking Submission and Validation Logic ---
+            const travelFormElement = document.getElementById('mainTravelForm'); // ID form utama
+            const kirimButton = document.getElementById('btnKirimBooking');
+            // Ganti 'message-container' dengan 'error-container' jika ID di HTML & CSS Anda adalah 'error-container'
+            const messageContainer = document.getElementById('message-container');
+
+            if (kirimButton && travelFormElement) {
+                kirimButton.addEventListener('click', async (event) => {
+                    event.preventDefault();
+                    messageContainer.innerHTML = ''; // Bersihkan pesan sebelumnya
+                    messageContainer.className = 'message-container'; // Reset class dasar
+
+                    // Reset class 'error-input' dari semua field yang relevan sebelum validasi baru
+                    Object.values(formInputs).forEach(inputElement => {
+                        // Hanya reset jika elemennya adalah input atau select (bukan checkbox)
+                        if (inputElement && (inputElement.tagName === 'INPUT' || inputElement.tagName === 'SELECT')) {
+                            inputElement.classList.remove('error-input');
+                        }
+                    });
+
+                    // Ambil semua nilai form saat ini
+                    const currentFormData = {
+                        fullName: formInputs.fullName.value.trim(),
+                        phoneNumber: formInputs.phoneNumber.value.trim(),
+                        destinationPlace: formInputs.destinationPlace.value.trim(),
+                        departureAirport: formInputs.departureAirport.value.trim(),
+                        departureDateStr: formInputs.departureDateStr.value,
+                        returnDateStr: formInputs.returnDateStr.value, // Bisa kosong
+                        totalPassengers: parseInt(formInputs.totalPassengers.value) || 0,
+                        adults: parseInt(formInputs.adults.value) || 0,
+                        children: parseInt(formInputs.children.value) || 0,
+                        travelInsurance: formInputs.travelInsurance.checked,
+                        specialFoodRequest: formInputs.specialFoodRequest.checked,
+                        flightClass: formInputs.flightClass.value
+                    };
+
+                    let errors = [];
+                    // Fungsi helper untuk menambahkan error dan menandai input field
+                    const addError = (message, inputFieldElement) => {
+                        errors.push(message);
+                        if (inputFieldElement) {
+                            inputFieldElement.classList.add('error-input');
+                        }
+                    };
+
+                    // --- Mulai Validasi ---
+                    if (!currentFormData.fullName) addError("Nama Lengkap wajib diisi.", formInputs.fullName);
+
+                    if (!currentFormData.phoneNumber) {
+                        addError("Nomor Telepon wajib diisi.", formInputs.phoneNumber);
+                    } else if (!/^08[0-9]{8,11}$/.test(currentFormData.phoneNumber)) {
+                        addError("Format Nomor Telepon tidak valid (contoh: 08123456789).", formInputs.phoneNumber);
+                    }
+
+                    if (!currentFormData.destinationPlace) addError("Tempat/Kota tujuan wajib diisi.", formInputs.destinationPlace);
+                    if (!currentFormData.departureAirport) addError("Dari Bandara wajib diisi.", formInputs.departureAirport);
+
+                    if (!currentFormData.departureDateStr) {
+                        addError("Tanggal Berangkat wajib diisi.", formInputs.departureDateStr);
+                    } else {
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        const departureDateObj = new Date(currentFormData.departureDateStr);
+                        if (departureDateObj < today) {
+                            addError("Tanggal Berangkat tidak boleh di masa lalu.", formInputs.departureDateStr);
+                        }
+                        if (currentFormData.returnDateStr) { // Hanya validasi jika tanggal kembali diisi
+                            const returnDateObj = new Date(currentFormData.returnDateStr);
+                            if (returnDateObj < departureDateObj) {
+                                addError("Tanggal Kembali tidak boleh sebelum Tanggal Berangkat.", formInputs.returnDateStr);
+                            }
+                        }
+                    }
+
+                    if (currentFormData.totalPassengers < 1) addError("Jumlah Penumpang minimal 1.", formInputs.totalPassengers);
+
+                    // Cek nilai dewasa dan anak-anak, pastikan tidak negatif (meskipun atribut min sudah ada)
+                    if (currentFormData.adults < 0) addError("Jumlah Dewasa tidak boleh negatif.", formInputs.adults);
+                    if (currentFormData.children < 0) addError("Jumlah Anak-anak tidak boleh negatif.", formInputs.children);
+
+                    if (currentFormData.adults + currentFormData.children !== currentFormData.totalPassengers) {
+                        addError("Jumlah Dewasa + Anak-anak harus sama dengan Jumlah Penumpang total.", formInputs.totalPassengers);
+                        // Tandai juga input dewasa dan anak jika ini masalahnya
+                        if (formInputs.adults) formInputs.adults.classList.add('error-input');
+                        if (formInputs.children) formInputs.children.classList.add('error-input');
+                    }
+
+                    if (currentFormData.adults === 0 && currentFormData.totalPassengers > 0) {
+                        addError("Minimal harus ada 1 orang dewasa dalam pemesanan.", formInputs.adults);
+                    }
+
+                    if (!currentFormData.flightClass) addError("Kelas Penerbangan wajib dipilih.", formInputs.flightClass);
+
+                    // --- Akhir Validasi ---
+
+                    if (errors.length > 0) {
+                        messageContainer.style.display = 'block';
+                        messageContainer.classList.add('error'); // Sesuai dengan #message-container.error atau #error-container.error
+                        messageContainer.innerHTML = `<ul>${errors.map(e => `<li>${e}</li>`).join('')}</ul>`;
+                        return; // Hentikan proses jika ada error
+                    }
+
+                    // Jika validasi lolos, siapkan data untuk Firebase
+                    const bookingData = {
+                        fullName: currentFormData.fullName,
+                        phoneNumber: currentFormData.phoneNumber,
+                        destinationPlace: currentFormData.destinationPlace,
+                        departureAirport: currentFormData.departureAirport,
+                        departureDate: currentFormData.departureDateStr, // Simpan sebagai string YYYY-MM-DD
+                        returnDate: currentFormData.returnDateStr || null, // Simpan null jika kosong
+                        totalPassengers: currentFormData.totalPassengers,
+                        adults: currentFormData.adults,
+                        children: currentFormData.children,
+                        travelInsurance: currentFormData.travelInsurance,
+                        specialFoodRequest: currentFormData.specialFoodRequest,
+                        flightClass: currentFormData.flightClass,
+                        bookingTimestamp: serverTimestamp(), // Waktu server Firebase
+                        status: "pending"
+                    };
+
+                    kirimButton.disabled = true;
+                    kirimButton.textContent = 'Mengirim...';
+
+                    try {
+                        const docRef = await addDoc(collection(db, 'bookings'), bookingData);
+                        console.log("Booking berhasil dikirim dengan ID: ", docRef.id);
+                        messageContainer.style.display = 'block';
+                        messageContainer.classList.add('success'); // Sesuai dengan #message-container.success atau #error-container.success
+                        messageContainer.innerHTML = "Booking Anda telah berhasil dikirim! Kami akan segera menghubungi Anda.";
+                        travelFormElement.reset(); // Reset form setelah berhasil
+                        // Setelah reset, kembalikan tipe input tanggal ke text agar placeholder kembali terlihat
+                        dateInputs.forEach(input => input.type = 'text');
+
+                    } catch (error) {
+                        console.error("Error menambahkan booking: ", error);
+                        messageContainer.style.display = 'block';
+                        messageContainer.classList.add('error');
+                        messageContainer.innerHTML = "Terjadi kesalahan saat mengirim booking. Silakan coba lagi.";
+                    } finally {
+                        kirimButton.disabled = false;
+                        kirimButton.textContent = 'Kirim';
+                    }
+                });
+            }
+        });
+
+        // --- Sidebar Functions ---
+        window.openSidebar = function () {
+            const sidebar = document.getElementById("mySidebar");
+            if (sidebar) {
+                sidebar.style.width = "100%";
+                // Jika Anda memiliki ID pada tombol-tombol di sidebar:
+                // document.getElementById("sideButton1").style.opacity = "1"; // dst.
+            }
+            document.getElementById("sideButton1").style.opacity = "100%";
+            document.getElementById("sideButton2").style.opacity = "100%";
+            document.getElementById("sideButton3").style.opacity = "100%";
+            document.getElementById("sideButton4").style.opacity = "100%";
+            document.getElementById("sideButton5").style.opacity = "100%";
+        }
+        window.closeSidebar = function () {
+            const sidebar = document.getElementById("mySidebar");
+            if (sidebar) {
+                sidebar.style.width = "0";
+                // document.getElementById("sideButton1").style.opacity = "0"; // dst.
+            }
+            document.getElementById("sideButton1").style.opacity = "0";
+            document.getElementById("sideButton2").style.opacity = "0";
+            document.getElementById("sideButton3").style.opacity = "0";
+            document.getElementById("sideButton4").style.opacity = "0";
+            document.getElementById("sideButton5").style.opacity = "0";
+        }
+    </script>
+</body>
+
+</html>
